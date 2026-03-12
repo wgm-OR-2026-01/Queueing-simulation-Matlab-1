@@ -1,4 +1,4 @@
-%[text] # Run samples of the ServiceQueue simulation
+%[text] # Run samples of the ServiceQueue simulation Sarah Kundrat
 %[text] Collect statistics and plot histograms along the way.
 %%
 %[text] ## Set up
@@ -34,17 +34,17 @@ rng("default");
 %[text] We'll store our queue simulation objects in this list.
 QSamples = cell([NumSamples, 1]);
 %[text] The statistics come out weird if the log interval is too short, because the log entries are not independent enough.  So the log interval should be long enough for several arrival and departure events happen.
-for SampleNum = 1:NumSamples
-    fprintf("Working on sample %d\n", SampleNum);
-    q = ServiceQueue( ...
-        ArrivalRate=lambda, ...
-        DepartureRate=mu, ...
-        NumServers=s, ...
-        LogInterval=LogInterval);
+for SampleNum = 1:NumSamples %[output:group:7bc850d4]
+    fprintf("Working on sample %d\n", SampleNum); %[output:59a32a0b]
+    q = ServiceQueue( ... %[output:4b96ae57]
+        ArrivalRate=lambda, ... %[output:4b96ae57]
+        DepartureRate=mu, ... %[output:4b96ae57]
+        NumServers=s, ... %[output:4b96ae57]
+        LogInterval=LogInterval); %[output:4b96ae57]
     q.schedule_event(Arrival(random(q.InterArrivalDist), Customer(1)));
     run_until(q, MaxTime);
     QSamples{SampleNum} = q;
-end
+end %[output:group:7bc850d4]
 %%
 %[text] ## Collect measurements of how many customers are in the system
 %[text] Count how many customers are in the system at each log entry for each sample run.  There are two ways to do this.  You only have to do one of them.
@@ -156,8 +156,15 @@ xlim(ax, [0, 2.0]);
 pause(2);
 %[text] Save the picture as a PDF file.
 exportgraphics(fig, "Time in system histogram.pdf");
+
 %[appendix]{"version":"1.0"}
 %---
 %[metadata:view]
 %   data: {"layout":"inline"}
+%---
+%[output:59a32a0b]
+%   data: {"dataType":"text","outputData":{"text":"Working on sample 1\n","truncated":false}}
+%---
+%[output:4b96ae57]
+%   data: {"dataType":"error","outputData":{"errorType":"runtime","text":"makedist requires one of the following:\n  <a href=\"matlab:matlab.internal.addons.launchers.showExplorer('ErrorRecovery', 'identifier', 'SO', 'focused', 'makedist');\">Simulink Design Optimization<\/a>\n  <a href=\"matlab:matlab.internal.addons.launchers.showExplorer('ErrorRecovery', 'identifier', 'ST', 'focused', 'makedist');\">Statistics and Machine Learning Toolbox<\/a>\n\nError in <a href=\"matlab:matlab.lang.internal.introspective.errorDocCallback('ServiceQueue', '\/Users\/sarah\/Documents\/GitHub\/Untitled\/ServiceQueue.m', 117)\" style=\"font-weight:bold\">ServiceQueue<\/a> (<a href=\"matlab: opentoline('\/Users\/sarah\/Documents\/GitHub\/Untitled\/ServiceQueue.m',117,0)\">line 117<\/a>)\n                makedist(\"Exponential\", mu=1\/obj.ArrivalRate);\n                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"}}
 %---
