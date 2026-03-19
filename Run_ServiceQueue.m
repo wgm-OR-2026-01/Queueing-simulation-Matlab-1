@@ -1,4 +1,5 @@
-%[text] # Run samples of the ServiceQueue simulation Natalie Huey
+%[text] # Run samples of the ServiceQueue simulation Natalie Huey 2
+%[text] 
 %[text] Collect statistics and plot histograms along the way.
 %%
 %[text] ## Set up
