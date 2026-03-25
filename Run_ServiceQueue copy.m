@@ -1,4 +1,4 @@
-%[text] # Run samples of the ServiceQueue simulation
+%[text] # Run samples of the ServiceQueue simulation Ryan Brundage
 %[text] Collect statistics and plot histograms along the way.
 %%
 %[text] ## Set up
@@ -161,7 +161,7 @@ exportgraphics(fig, "Time in system histogram.pdf"); %[output:2949d2c7]
 %[text]  1b. Lq = 4.1667
 %[text] 1c. W = 0.5 hours = 30 minutes
 %[text] 1d. Wq = 0.4167 hours = 25 minutes
-%[text] Part B:
+%[text] 2\):
 %[text] The simulation agrees well with the theoretical M/M/1 results. The mean number in system differs from theory by 3.83%, and the mean time in system differs from theory by 3.94%.
 
 %[appendix]{"version":"1.0"}
