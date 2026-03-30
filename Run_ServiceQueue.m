@@ -156,6 +156,16 @@ xlim(ax, [0, 2.0]); %[output:4af819eb]
 pause(2);
 %[text] Save the picture as a PDF file.
 exportgraphics(fig, "Time in system histogram.pdf"); %[output:4af819eb]
+%[text] Answers to Part A:
+%[text] 1\)
+%[text] L = 5.0
+%[text] L\_q  = 25/6
+%[text] W = 0.5
+%[text] W\_q = 0.4167
+%[text] 2\)
+%[text] How well do the results agree with the statistics calculated from the simulation? Express the discrepency as a percentage of the theoretical value.
+%[text] Discrepency for L = 3.83%
+%[text] Discrepency for W = 3.95%
 
 %[appendix]{"version":"1.0"}
 %---
