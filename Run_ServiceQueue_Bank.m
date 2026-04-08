@@ -3,29 +3,24 @@
 %%
 %[text] ## Set up
 %[text] We'll measure time in hours
-%[text] Arrival rate: 10 per hour
-lambda = 10;
-%[text] Departure (service) rate: 1 per 5 minutes, so 12 per hour
-mu = 12;
+%[text] Arrival rate: 40 per hour
+lambda = 40;
+%[text] Departure (service) rate: 1 per 2 minutes, so 30 per hour
+mu = 30;
 %[text] Number of serving stations
-s = 1;
+s = 2;
 %[text] Run 100 samples of the queue.
 NumSamples = 100;
 %[text] Each sample is run up to a maximum time.
-MaxTime = 96;
+MaxTime = 8;
 %[text] Make a log entry every so often
 LogInterval = 1/60;
 %%
-%[text] ## Numbers from theory for M/M/1 queue
-%[text] Compute `P(1+n)` = $P\_n$ = probability of finding the system in state $n$ in the long term. Note that this calculation assumes $s=1$.
-rho = lambda / mu;
-P0 = 1 - rho;
-nMax = 10;
-P = zeros([1, nMax+1]);
-P(1) = P0;
-for n = 1:nMax
-    P(1+n) = P0 * rho^n;
-end
+%[text] ## Numbers from theory for M/M/2 queue
+%[text] Compute $P\_n$ = probability of finding the system in state $n$ in the long term. Note that this calculation assumes $s=2$.
+% Theoretical P_n values for M/M/2
+P = [0.2, 0.267, 0.178, 0.119, 0.079, 0.053];  % P0..P5
+nMax = length(P)-1;
 %%
 %[text] ## Run simulation samples
 %[text] This is the most time consuming calculation in the script, so let's put it in its own section.  That way, we can run it once, and more easily run the faster calculations multiple times as we add features to this script.
@@ -58,6 +53,13 @@ for SampleNum = 1:NumSamples
     % columns like this.
     NumInSystemSamples{SampleNum} = q.Log.NumWaiting + q.Log.NumInService;
 end
+
+% Compute simulation L_q
+NumWaitingSamples = cell([NumSamples, 1]);
+for SampleNum = 1:NumSamples
+    q = QSamples{SampleNum};
+    NumWaitingSamples{SampleNum} = q.Log.NumWaiting;
+end
 %[text] ### Option two: Map a function over the cell array of ServiceQueue objects.
 %[text] The `@(q) ...` expression is shorthand for a function that takes a `ServiceQueue` as input, names it `q`, and computes the sum of two columns from its log.  The `cellfun` function applies that function to each item in `QSamples`. The option `UniformOutput=false` tells `cellfun` to produce a cell array rather than a numerical array.
 NumInSystemSamples = cellfun( ...
@@ -67,6 +69,8 @@ NumInSystemSamples = cellfun( ...
 %[text] ## Join numbers from all sample runs.
 %[text] `vertcat` is short for "vertical concatenate", meaning it joins a bunch of arrays vertically, which in this case results in one tall column.
 NumInSystem = vertcat(NumInSystemSamples{:});
+
+NumWaiting = vertcat(NumWaitingSamples{:});
 %[text] MATLAB-ism: When you pull multiple items from a cell array, the result is a "comma-separated list" rather than some kind of array.  Thus, the above means
 %[text] `NumInSystem = vertcat(NumInSystemSamples{1}, NumInSystemSamples{2}, ...)`
 %[text] which concatenates all the columns of numbers in NumInSystemSamples into one long column.
@@ -76,6 +80,9 @@ NumInSystem = vertcat(NumInSystemSamples{:});
 %[text] Print out mean number of customers in the system.
 meanNumInSystem = mean(NumInSystem);
 fprintf("Mean number in system: %f\n", meanNumInSystem);
+
+meanNumWaiting = mean(NumWaiting);
+fprintf("Mean number waiting: %f\n", meanNumWaiting);
 %[text] Make a figure with one set of axes.
 fig = figure();
 t = tiledlayout(fig,1,1);
@@ -144,21 +151,27 @@ fig = figure();
 t = tiledlayout(fig,1,1);
 ax = nexttile(t);
 %[text] This time, the data is a list of real numbers, not integers.  The option `BinWidth=...` means to use bins of a particular width, and choose the left-most and right-most edges automatically.  Instead, you could specify the left-most and right-most edges explicitly.  For instance, using `BinEdges=0:0.5:60` means to use bins $(0, 0.5), (0.5, 1.0), \\dots$
-h = histogram(ax, TimeInSystem, Normalization="probability", BinWidth=5/60);
+h = histogram(ax, TimeInSystem, Normalization="probability", BinWidth=1/60);
 %[text] Add titles and labels and such.
 title(ax, "Time in the system");
 xlabel(ax, "Time");
 ylabel(ax, "Probability");
 %[text] Set ranges on the axes.
-ylim(ax, [0, 0.2]);
-xlim(ax, [0, 2.0]);
+ylim(ax, [0, 0.5]);
+xlim(ax, [0,0.5]);
 %[text] Wait for MATLAB to catch up.
 pause(2);
 %[text] Save the picture as a PDF file.
 exportgraphics(fig, "Time in system histogram.pdf");
+%[text] 3\) $P\_0=$ $\\frac{1}{5}$, $P\_1 = 0.267$, $P\_2=0.178$, $P\_3=0.119$, $P\_4=0.079$, and $P\_5=0.053$.
+%[text] L = 2.4 
+%[text] $L\_q$ = 1.067
+%[text] W = 0.06 hours, which is 3.6 minutes
+%[text] $W\_q$ = 0.027 hours, which is 1.62 minutes
+%[text] 5\) The simulation gives L approximately 2.41, W approximately 0.06, $L\_q$ approximately 1.09, and $W\_q$ approximately 0.027, so the theoretical results agree very closely with the simulation. The percent discrepancy is $\\frac{2.41-2.4}{2.4}$$\\cdot$100 = 0.417% for L, $\\frac{0.06-0.06}{0.06}$$\\cdot$100 = 0% for W, $\\frac{1.09-1.067}{1.067}$$\\cdot$100 = 2.2% for $L\_q$, and $\\frac{0.027-0.27}{0.027}$$\\cdot$100 = 0% for $W\_q$.
 
 %[appendix]{"version":"1.0"}
 %---
 %[metadata:view]
-%   data: {"layout":"onright"}
+%   data: {"layout":"onright","rightPanelPercent":40}
 %---
