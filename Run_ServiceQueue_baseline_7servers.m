@@ -3,23 +3,23 @@
 %%\
 %\[text] ## Set up
 %\[text] We'll measure time in hours
-%\[text] Arrival rate: 10 per hour
-lambda = 10;
+%\[text] Arrival rate: 0.8 per hour
+lambda = 0.8;
 
-%\[text] Departure (service) rate: 1 per 5 minutes, so 12 per hour
-mu = 12;
+%\[text] Departure (service) rate: 1 per 6.5 minutes, so 12 per hour
+mu = 1/6.5;
 
 %\[text] Number of serving stations
-s = 1;
+s = 7;
 
 %\[text] Run 100 samples of the queue.
 NumSamples = 100;
 
 %\[text] Each sample is run up to a maximum time.
-MaxTime = 96;
+MaxTime = 240;
 
 %\[text] Make a log entry every so often
-LogInterval = 1/60;
+LogInterval = 5;
 
 %%\
 %\[text] ## Numbers from theory for M/M/1 queue
@@ -220,7 +220,7 @@ fprintf("==============================\n"); %[output:13c79e5f]
 %[appendix]{"version":"1.0"}
 %---
 %[metadata:view]
-%   data: {"layout":"onright","rightPanelPercent":29}
+%   data: {"layout":"onright","rightPanelPercent":22.1}
 %---
 %[output:9bb20cec]
 %   data: {"dataType":"text","outputData":{"text":"Working on sample 1\nWorking on sample 2\nWorking on sample 3\nWorking on sample 4\nWorking on sample 5\nWorking on sample 6\nWorking on sample 7\nWorking on sample 8\nWorking on sample 9\nWorking on sample 10\nWorking on sample 11\nWorking on sample 12\nWorking on sample 13\nWorking on sample 14\nWorking on sample 15\nWorking on sample 16\nWorking on sample 17\nWorking on sample 18\nWorking on sample 19\nWorking on sample 20\nWorking on sample 21\nWorking on sample 22\nWorking on sample 23\nWorking on sample 24\nWorking on sample 25\nWorking on sample 26\nWorking on sample 27\nWorking on sample 28\nWorking on sample 29\nWorking on sample 30\nWorking on sample 31\nWorking on sample 32\nWorking on sample 33\nWorking on sample 34\nWorking on sample 35\nWorking on sample 36\nWorking on sample 37\nWorking on sample 38\nWorking on sample 39\nWorking on sample 40\nWorking on sample 41\nWorking on sample 42\nWorking on sample 43\nWorking on sample 44\nWorking on sample 45\nWorking on sample 46\nWorking on sample 47\nWorking on sample 48\nWorking on sample 49\nWorking on sample 50\nWorking on sample 51\nWorking on sample 52\nWorking on sample 53\nWorking on sample 54\nWorking on sample 55\nWorking on sample 56\nWorking on sample 57\nWorking on sample 58\nWorking on sample 59\nWorking on sample 60\nWorking on sample 61\nWorking on sample 62\nWorking on sample 63\nWorking on sample 64\nWorking on sample 65\nWorking on sample 66\nWorking on sample 67\nWorking on sample 68\nWorking on sample 69\nWorking on sample 70\nWorking on sample 71\nWorking on sample 72\nWorking on sample 73\nWorking on sample 74\nWorking on sample 75\nWorking on sample 76\nWorking on sample 77\nWorking on sample 78\nWorking on sample 79\nWorking on sample 80\nWorking on sample 81\nWorking on sample 82\nWorking on sample 83\nWorking on sample 84\nWorking on sample 85\nWorking on sample 86\nWorking on sample 87\nWorking on sample 88\nWorking on sample 89\nWorking on sample 90\nWorking on sample 91\nWorking on sample 92\nWorking on sample 93\nWorking on sample 94\nWorking on sample 95\nWorking on sample 96\nWorking on sample 97\nWorking on sample 98\nWorking on sample 99\nWorking on sample 100\n","truncated":false}}
